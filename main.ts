@@ -1,7 +1,10 @@
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    Pizza.destroy()
+    Pizza.setFlag(SpriteFlag.Invisible, true)
     music.powerUp.play()
-    info.changeLifeBy(1)
+    info.changeScoreBy(1)
+    pause(1000)
+    Pizza.setFlag(SpriteFlag.Invisible, false)
+    Pizza.setPosition(randint(10, 150), randint(10, 110))
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     Ghost.setFlag(SpriteFlag.Invisible, true)
@@ -9,27 +12,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     info.changeLifeBy(-1)
     pause(1000)
     Ghost.setFlag(SpriteFlag.Invisible, false)
-    Ghost.setPosition(102, 60)
+    Ghost.setPosition(randint(10, 150), randint(10, 110))
 })
+let puppy: Sprite = null
 let Ghost: Sprite = null
 let Pizza: Sprite = null
 scene.setBackgroundColor(7)
-let puppy = sprites.create(img`
-    e e e . . . . e e e . . . . 
-    c d d c . . c d d c . . . . 
-    c b d d f f d d b c . . . . 
-    c 3 b d d b d b 3 c . . . . 
-    f b 3 d d d d 3 b f . . . . 
-    e d d d d d d d d e . . . . 
-    e d f d d d d f d e . b f b 
-    f d d f d d f d d f . f d f 
-    f b d d b b d d 2 f . f d f 
-    . f 2 2 2 2 2 2 b b f f d f 
-    . f b d d d d d d b b d b f 
-    . f d d d d d b d d f f f . 
-    . f d f f f d f f d f . . . 
-    . f f . . f f . . f f . . . 
-    `, SpriteKind.Player)
+game.splash("Pizza Chaser ", "By Davies Tech Software")
 Pizza = sprites.create(img`
     .............beebbbb............
     ............eebbbb4bb...........
@@ -90,9 +79,27 @@ Ghost = sprites.create(img`
     ........................
     ........................
     `, SpriteKind.Enemy)
-puppy.setPosition(20, 60)
-Pizza.setPosition(132, 60)
-Ghost.setPosition(102, 60)
+puppy.setPosition(randint(10, 70), randint(10, 110))
+Pizza.setPosition(randint(90, 150), randint(10, 110))
+Ghost.setPosition(randint(90, 150), randint(10, 110))
 info.setLife(3)
+info.setScore(0)
 controller.moveSprite(puppy)
 Ghost.follow(puppy, 10)
+info.startCountdown(60)
+puppy = sprites.create(img`
+    e e e . . . . e e e . . . . 
+    c d d c . . c d d c . . . . 
+    c b d d f f d d b c . . . . 
+    c 3 b d d b d b 3 c . . . . 
+    f b 3 d d d d 3 b f . . . . 
+    e d d d d d d d d e . . . . 
+    e d f d d d d f d e . b f b 
+    f d d f d d f d d f . f d f 
+    f b d d b b d d 2 f . f d f 
+    . f 2 2 2 2 2 2 b b f f d f 
+    . f b d d d d d d b b d b f 
+    . f d d d d d b d d f f f . 
+    . f d f f f d f f d f . . . 
+    . f f . . f f . . f f . . . 
+    `, SpriteKind.Player)
